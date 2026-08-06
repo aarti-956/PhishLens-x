@@ -1,97 +1,87 @@
-import { Shield, Sparkles, Workflow, Layers3 } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { EmptyState } from "@/components/ui/empty-state";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+import { InvestigationWorkspace } from "@/components/layout/investigation-workspace";
 
-const foundationHighlights = [
-  {
-    title: "Design system",
-    description: "Tokens, spacing, typography, and color primitives for a premium cyber product",
-    icon: Layers3,
-  },
-  {
-    title: "Composable UI",
-    description: "Reusable primitives for cards, dialogs, tabs, loading, and empty states",
-    icon: Workflow,
-  },
-  {
-    title: "Runtime foundation",
-    description: "Providers, app shell, and metadata set for future feature expansion",
-    icon: Shield,
-  },
+const summaryCards = [
+  { label: "Emails Scanned Today", value: "2,430", tone: "default" as const },
+  { label: "Threats Detected", value: "18", tone: "warning" as const },
+  { label: "Safe Emails", value: "2,392", tone: "success" as const },
+  { label: "Pending Investigations", value: "11", tone: "secondary" as const },
 ];
 
 export default function Home() {
   return (
     <AppShell>
-      <div className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-        <Card className="border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--muted)]">
-                Foundation pillars
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold text-foreground">
-                Built for scale, clarity, and future product depth.
-              </h2>
+      <div className="space-y-6">
+        <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <Card className="border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl sm:p-8">
+            <div className="flex items-center gap-2 text-sm font-medium text-[color:var(--accent)]">
+              <Sparkles className="h-4 w-4" />
+              Mission Control
             </div>
-            <Badge variant="accent">Phase 1</Badge>
-          </div>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              Detect and investigate phishing emails with AI-assisted clarity.
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg text-[color:var(--muted)]">
+              PhishLens X helps analysts review suspicious messages, evaluate trust signals, and assess risk in a calm, modern workspace.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/investigation/demo">
+                <button className="inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--accent)] px-4 py-2 text-sm font-medium text-[color:var(--accent-foreground)] transition hover:opacity-90">
+                  Start New Investigation
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </Link>
+              <button className="inline-flex items-center justify-center rounded-full border border-white/10 bg-transparent px-4 py-2 text-sm font-medium text-foreground transition hover:bg-white/5">
+                View Sample Report
+              </button>
+            </div>
+          </Card>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {foundationHighlights.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="rounded-[1rem] border border-white/10 bg-[rgba(7,13,32,0.7)] p-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--accent)]/10 text-[color:var(--accent)]">
-                    <Icon className="h-5 w-5" />
+          <Card className="border-white/10 bg-[rgba(7,13,32,0.72)] p-6 backdrop-blur-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--muted)]">Daily posture</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">Threats contained</p>
+              </div>
+              <Badge variant="success">Stable</Badge>
+            </div>
+            <div className="mt-6 space-y-4">
+              <div className="rounded-[1rem] border border-white/10 bg-white/[0.035] p-4">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-full border border-[color:var(--accent)]/20 bg-[color:var(--accent)]/10 p-2 text-[color:var(--accent)]">
+                    <ShieldCheck className="h-4 w-4" />
                   </div>
-                  <h3 className="mt-4 text-base font-semibold text-foreground">{item.title}</h3>
-                  <p className="mt-2 text-sm text-[color:var(--muted)]">{item.description}</p>
+                  <div>
+                    <p className="font-medium text-foreground">Analyst queue is healthy</p>
+                    <p className="mt-1 text-sm text-[color:var(--muted)]">No critical disruptions detected across the current review pipeline.</p>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </Card>
+              </div>
+              <div className="rounded-[1rem] border border-white/10 bg-white/[0.035] p-4 text-sm text-[color:var(--muted)]">
+                Next recommended action: validate newly surfaced impersonation signals.
+              </div>
+            </div>
+          </Card>
+        </section>
 
-        <Card className="border-white/10 bg-[rgba(7,13,32,0.72)] p-6 backdrop-blur-xl">
-          <div className="flex items-center gap-2 text-[color:var(--accent)]">
-            <Sparkles className="h-4 w-4" />
-            <p className="text-sm font-medium">System readiness</p>
-          </div>
-          <div className="mt-4 space-y-4">
-            <div>
-              <div className="mb-2 flex items-center justify-between text-sm text-[color:var(--muted)]">
-                <span>Theme configuration</span>
-                <span>100%</span>
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {summaryCards.map((card) => (
+            <Card key={card.label} className="border-white/10 bg-[rgba(7,13,32,0.68)] p-5 backdrop-blur-xl">
+              <p className="text-sm text-[color:var(--muted)]">{card.label}</p>
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-2xl font-semibold text-foreground">{card.value}</p>
+                <Badge variant={card.tone}>{card.tone === "default" ? "Live" : card.tone === "warning" ? "Watch" : card.tone === "success" ? "Safe" : "Open"}</Badge>
               </div>
-              <Progress value={100} />
-            </div>
-            <div>
-              <div className="mb-2 flex items-center justify-between text-sm text-[color:var(--muted)]">
-                <span>Component primitives</span>
-                <span>98%</span>
-              </div>
-              <Progress value={98} />
-            </div>
-            <div>
-              <div className="mb-2 flex items-center justify-between text-sm text-[color:var(--muted)]">
-                <span>App architecture</span>
-                <span>96%</span>
-              </div>
-              <Progress value={96} />
-            </div>
-          </div>
-          <Separator className="my-5" />
-          <EmptyState
-            title="Ready for feature modules"
-            description="The next phase can build dashboards, threat investigation views, and AI workflows on top of this polished base."
-          />
-        </Card>
+            </Card>
+          ))}
+        </section>
+
+        <InvestigationWorkspace />
       </div>
     </AppShell>
   );
