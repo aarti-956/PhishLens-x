@@ -1,0 +1,22 @@
+:root {
+  color-scheme: dark;
+  --background: #050816;
+  --foreground: #f5f7ff;
+  --card: rgba(7, 13, 32, 0.86);
+  --card-foreground: #f5f7ff;
+  --border: rgba(124, 147, 255, 0.2);
+  --muted: #8da0cf;
+  --accent: #7c93ff;
+  --accent-foreground: #050816;
+  --success: #2ed3a3;
+  --warning: #ffb84d;
+  --destructive: #ff617d;
+  --ring: rgba(124, 147, 255, 0.45);
+  --radius: 1rem;
+  --shadow-elevated: 0 20px 60px rgba(2, 6, 23, 0.55);
+  --glow-strong: 0 0 0 1px rgba(124, 147, 255, 0.2), 0 28px 60px rgba(72, 99, 255, 0.16);
+}
+
+.dark {
+  color-scheme: dark;
+}
