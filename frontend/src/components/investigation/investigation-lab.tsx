@@ -4,8 +4,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { AnalysisProgress } from "@/components/investigation/analysis-progress";
+import { EmailError } from "@/components/investigation/email-error";
 import { EmailInput } from "@/components/investigation/email-input";
+import { LoadedEmailReview } from "@/components/investigation/loaded-email-review";
 import { ThreatResult } from "@/components/investigation/threat-result";
+import { useInvestigation } from "@/components/investigation/investigation-context";
 import { Card } from "@/components/ui/card";
 
 const demoEmail = {
@@ -26,13 +29,20 @@ IT Security Team`,
 };
 
 export function InvestigationLab() {
+  const { email, setEmail } = useInvestigation();
   const [stage, setStage] = useState<"input" | "analyzing" | "complete">("input");
-  const [sender, setSender] = useState("");
-  const [recipient, setRecipient] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
+  const [sender, setSender] = useState(email?.sender ?? "");
+  const [recipient, setRecipient] = useState(email?.recipient ?? "");
+  const [subject, setSubject] = useState(email?.subject ?? "");
+  const [body, setBody] = useState(email?.content ?? email?.rawContent ?? "");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   function handleAnalyze() {
+    if (!email && !body.trim()) {
+      setErrorMessage("No email content is available to analyze yet.");
+      return;
+    }
+    setErrorMessage(null);
     setStage("analyzing");
     window.setTimeout(() => setStage("complete"), 1000);
   }
@@ -42,6 +52,15 @@ export function InvestigationLab() {
     setRecipient(demoEmail.recipient);
     setSubject(demoEmail.subject);
     setBody(demoEmail.body);
+    setEmail({
+      sender: demoEmail.sender,
+      recipient: demoEmail.recipient,
+      subject: demoEmail.subject,
+      content: demoEmail.body,
+      source: "demo",
+      rawContent: demoEmail.body,
+    });
+    setErrorMessage(null);
     setStage("input");
   }
 
@@ -58,18 +77,22 @@ export function InvestigationLab() {
       </motion.div>
 
       {stage === "input" ? (
-        <EmailInput
-          sender={sender}
-          recipient={recipient}
-          subject={subject}
-          body={body}
-          onSenderChange={setSender}
-          onRecipientChange={setRecipient}
-          onSubjectChange={setSubject}
-          onBodyChange={setBody}
-          onAnalyze={handleAnalyze}
-          onUseDemo={handleUseDemo}
-        />
+        <>
+          {errorMessage ? <EmailError message={errorMessage} /> : null}
+          {email ? <LoadedEmailReview email={email} /> : null}
+          <EmailInput
+            sender={sender}
+            recipient={recipient}
+            subject={subject}
+            body={body}
+            onSenderChange={setSender}
+            onRecipientChange={setRecipient}
+            onSubjectChange={setSubject}
+            onBodyChange={setBody}
+            onAnalyze={handleAnalyze}
+            onUseDemo={handleUseDemo}
+          />
+        </>
       ) : null}
 
       {stage === "analyzing" ? <AnalysisProgress /> : null}
